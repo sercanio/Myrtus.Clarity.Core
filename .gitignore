@@ -31,7 +31,7 @@ $RECYCLE.BIN/
 
 # DotNet artifacts
 ./*/bin/
-./*/**/obj/
+./*/obj/
 
 # Rider project settings
 .idea/
