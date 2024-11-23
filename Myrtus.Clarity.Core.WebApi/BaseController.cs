@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Myrtus.Clarity.Core.WebApi;
 
-namespace Myrtus.CMS.WebAPI.Controllers
+namespace Myrtus.Clarity.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
