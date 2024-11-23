@@ -30,8 +30,8 @@ $RECYCLE.BIN/
 .vscode/
 
 # DotNet artifacts
-*/bin/
-*/obj/
+**/bin/
+**/obj/
 
 # Rider project settings
 .idea/
