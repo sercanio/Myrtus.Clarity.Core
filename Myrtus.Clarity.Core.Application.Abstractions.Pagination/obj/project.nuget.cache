@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "sj/Am3Yx0tA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\serca\\Source\\Repos\\sercanio\\MyrtusCMS\\core\\Myrtus.Clarity.Core.Application.Abstractions.Pagination\\Myrtus.Clarity.Core.Application.Abstractions.Pagination.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\serca\\.nuget\\packages\\sonaranalyzer.csharp\\9.32.0.97167\\sonaranalyzer.csharp.9.32.0.97167.nupkg.sha512"
+  ],
+  "logs": []
+}

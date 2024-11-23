@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "8GzXeTFxGQ8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\serca\\Source\\Repos\\sercanio\\MyrtusCMS\\core\\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\serca\\.nuget\\packages\\sonaranalyzer.csharp\\9.32.0.97167\\sonaranalyzer.csharp.9.32.0.97167.nupkg.sha512",
+    "C:\\Users\\serca\\.nuget\\packages\\system.linq.dynamic.core\\1.4.9\\system.linq.dynamic.core.1.4.9.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,12 @@
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\bin\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.deps.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\bin\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\bin\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.AssemblyInfoInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.AssemblyInfo.cs
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.csproj.CoreCompileInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.sourcelink.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\refint\Myrtus.Clarity.Core.Application.Abstractions.Pagination.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Pagination.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Pagination\obj\Release\net9.0\ref\Myrtus.Clarity.Core.Application.Abstractions.Pagination.dll

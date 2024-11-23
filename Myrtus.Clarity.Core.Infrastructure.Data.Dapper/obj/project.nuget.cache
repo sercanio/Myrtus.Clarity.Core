@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "Vg6zOGyluRk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\serca\\Source\\Repos\\sercanio\\MyrtusCMS\\core\\Myrtus.Clarity.Core.Infrastructure.Data.Dapper\\Myrtus.Clarity.Core.Infrastructure.Data.Dapper.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\serca\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
+    "C:\\Users\\serca\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\serca\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\serca\\.nuget\\packages\\npgsql\\9.0.1\\npgsql.9.0.1.nupkg.sha512",
+    "C:\\Users\\serca\\.nuget\\packages\\sonaranalyzer.csharp\\9.32.0.97167\\sonaranalyzer.csharp.9.32.0.97167.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,13 @@
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\bin\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.deps.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\bin\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\bin\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.csproj.AssemblyReference.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.AssemblyInfoInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.AssemblyInfo.cs
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.csproj.CoreCompileInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.sourcelink.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\refint\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.DynamicQuery\obj\Release\net9.0\ref\Myrtus.Clarity.Core.Infrastructure.DynamicQuery.dll

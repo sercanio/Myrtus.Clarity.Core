@@ -1,0 +1,13 @@
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\bin\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.deps.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\bin\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\bin\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.csproj.AssemblyReference.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.AssemblyInfoInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.AssemblyInfo.cs
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.csproj.CoreCompileInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.sourcelink.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\refint\Myrtus.Clarity.Core.Infrastructure.Authorization.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\Myrtus.Clarity.Core.Infrastructure.Authorization.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Infrastructure.Authorization\obj\Debug\net8.0\ref\Myrtus.Clarity.Core.Infrastructure.Authorization.dll

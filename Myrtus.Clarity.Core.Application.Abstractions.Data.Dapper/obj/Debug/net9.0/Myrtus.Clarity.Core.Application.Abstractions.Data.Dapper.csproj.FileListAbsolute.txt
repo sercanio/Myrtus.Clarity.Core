@@ -1,0 +1,12 @@
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\bin\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.deps.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\bin\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\bin\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.AssemblyInfoInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.AssemblyInfo.cs
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.csproj.CoreCompileInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.sourcelink.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\refint\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper\obj\Debug\net9.0\ref\Myrtus.Clarity.Core.Application.Abstractions.Data.Dapper.dll

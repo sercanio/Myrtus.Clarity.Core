@@ -1,0 +1,13 @@
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\bin\Debug\net8.0\Myrtus.Clarity.Core.WebApi.deps.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\bin\Debug\net8.0\Myrtus.Clarity.Core.WebApi.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\bin\Debug\net8.0\Myrtus.Clarity.Core.WebApi.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.csproj.AssemblyReference.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.AssemblyInfoInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.AssemblyInfo.cs
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.csproj.CoreCompileInputs.cache
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.sourcelink.json
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\refint\Myrtus.Clarity.Core.WebApi.dll
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\Myrtus.Clarity.Core.WebApi.pdb
+C:\Users\serca\Source\Repos\sercanio\MyrtusCMS\core\Myrtus.Clarity.Core.WebApi\obj\Debug\net8.0\ref\Myrtus.Clarity.Core.WebApi.dll
