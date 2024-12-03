@@ -6,23 +6,42 @@ using Microsoft.Extensions.Configuration;
 using Myrtus.Clarity.Core.Application.Abstractions.Auditing;
 using Myrtus.Clarity.Core.Domain.Abstractions;
 
-public class AuditLogService : IAuditLogService
+namespace Myrtus.Clarity.Core.Infrastructure.Auditing.Services
 {
-    private readonly IMongoCollection<AuditLog> _auditLogs;
-    private readonly IHubContext<AuditLogHub> _hubContext;
-
-    public AuditLogService(IConfiguration configuration, IHubContext<AuditLogHub> hubContext)
+    public class AuditLogService : IAuditLogService, IDisposable
     {
-        var client = new MongoClient(configuration.GetConnectionString("MongoDb"));
-        var database = client.GetDatabase(configuration["MongoDb:Database"]);
-        _auditLogs = database.GetCollection<AuditLog>("AuditLogs");
-        _hubContext = hubContext;
-    }
-
-    public async Task LogAsync(AuditLog log)
-    {
-        await _auditLogs.InsertOneAsync(log);
-        var message = JsonConvert.SerializeObject(log);
-        await _hubContext.Clients.All.SendAsync("ReceiveAuditLog", message);
+        private readonly IMongoCollection<AuditLog> _auditLogs;
+        private readonly IHubContext<AuditLogHub> _hubContext;
+        private readonly MongoClient _client;
+        private bool _disposed;
+        public AuditLogService(IConfiguration configuration, IHubContext<AuditLogHub> hubContext)
+        {
+            _client = new MongoClient(configuration.GetConnectionString("MongoDb"));
+            IMongoDatabase database = _client.GetDatabase(configuration["MongoDb:Database"]);
+            _auditLogs = database.GetCollection<AuditLog>("AuditLogs");
+            _hubContext = hubContext;
+        }
+        public async Task LogAsync(AuditLog log)
+        {
+            await _auditLogs.InsertOneAsync(log);
+            string message = JsonConvert.SerializeObject(log);
+            await _hubContext.Clients.All.SendAsync("ReceiveAuditLog", message);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _client?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
