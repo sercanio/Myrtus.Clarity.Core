@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Keycloak;
+namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Azure;
 
 public static class ClaimsPrincipalExtensions
 {

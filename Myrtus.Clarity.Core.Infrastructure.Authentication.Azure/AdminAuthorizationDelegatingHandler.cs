@@ -1,18 +1,18 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Myrtus.Clarity.Core.Infrastructure.Authentication.Keycloak.Models;
+using Myrtus.Clarity.Core.Infrastructure.Authentication.Azure.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 
-namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Keycloak;
+namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Azure;
 
 public sealed class AdminAuthorizationDelegatingHandler : DelegatingHandler
 {
-    private readonly KeycloakOptions _keycloakOptions;
+    private readonly AzureAdB2COptions _azureAdB2COptions;
 
-    public AdminAuthorizationDelegatingHandler(IOptions<KeycloakOptions> keycloakOptions)
+    public AdminAuthorizationDelegatingHandler(IOptions<AzureAdB2COptions> azureAdB2COptions)
     {
-        _keycloakOptions = keycloakOptions.Value;
+        _azureAdB2COptions = azureAdB2COptions.Value;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(
@@ -36,8 +36,8 @@ public sealed class AdminAuthorizationDelegatingHandler : DelegatingHandler
     {
         var authorizationRequestParameters = new KeyValuePair<string, string>[]
         {
-            new("client_id", _keycloakOptions.AdminClientId),
-            new("client_secret", _keycloakOptions.AdminClientSecret),
+            new("client_id", _azureAdB2COptions.ClientId),
+            new("client_secret", _azureAdB2COptions.ClientSecret),
             new("scope", "openid email"),
             new("grant_type", "client_credentials")
         };
@@ -46,7 +46,7 @@ public sealed class AdminAuthorizationDelegatingHandler : DelegatingHandler
 
         using var authorizationRequest = new HttpRequestMessage(
             HttpMethod.Post,
-            new Uri(_keycloakOptions.TokenUrl))
+            new Uri(_azureAdB2COptions.TenantId))
         {
             Content = authorizationRequestContent
         };
