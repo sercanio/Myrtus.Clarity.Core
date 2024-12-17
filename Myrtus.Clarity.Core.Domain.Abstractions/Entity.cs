@@ -1,53 +1,52 @@
-﻿using System.Collections.Immutable;
-
-namespace Myrtus.Clarity.Core.Domain.Abstractions;
-
-public abstract class Entity
+﻿namespace Myrtus.Clarity.Core.Domain.Abstractions
 {
-    public Guid Id { get; init; }
-    public string CreatedBy { get; set; }
-    public string? UpdatedBy { get; set; }
-    public DateTime CreatedOnUtc { get; private set; }
-    public DateTime? UpdatedOnUtc { get; private set; }
-    public DateTime? DeletedOnUtc { get; private set; }
-
-    private readonly List<IDomainEvent> _domainEvents = new();
-
-    protected Entity(Guid id)
+    public abstract class Entity
     {
-        Id = id;
-        CreatedBy = "System";
-        CreatedOnUtc = DateTime.UtcNow;
-    }
+        public Guid Id { get; init; }
+        public string CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
+        public DateTime CreatedOnUtc { get; private set; }
+        public DateTime? UpdatedOnUtc { get; private set; }
+        public DateTime? DeletedOnUtc { get; private set; }
 
-    protected Entity()
-    {
-        CreatedBy = "System";
-        CreatedOnUtc = DateTime.UtcNow;
-    }
+        private readonly List<IDomainEvent> _domainEvents = new();
 
-    public IReadOnlyList<IDomainEvent> GetDomainEvents()
-    {
-        return _domainEvents.ToList();
-    }
+        protected Entity(Guid id)
+        {
+            Id = id;
+            CreatedBy = "System";
+            CreatedOnUtc = DateTime.UtcNow;
+        }
 
-    public void ClearDomainEvents()
-    {
-        _domainEvents.Clear();
-    }
+        protected Entity()
+        {
+            CreatedBy = "System";
+            CreatedOnUtc = DateTime.UtcNow;
+        }
 
-    public void RaiseDomainEvent(IDomainEvent domainEvent)
-    {
-        _domainEvents.Add(domainEvent);
-    }
+        public IReadOnlyList<IDomainEvent> GetDomainEvents()
+        {
+            return _domainEvents.ToList();
+        }
 
-    public void MarkUpdated()
-    {
-        UpdatedOnUtc = DateTime.UtcNow;
-    }
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
 
-    public void MarkDeleted()
-    {
-        DeletedOnUtc = DateTime.UtcNow;
+        public void RaiseDomainEvent(IDomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public void MarkUpdated()
+        {
+            UpdatedOnUtc = DateTime.UtcNow;
+        }
+
+        public void MarkDeleted()
+        {
+            DeletedOnUtc = DateTime.UtcNow;
+        }
     }
 }
