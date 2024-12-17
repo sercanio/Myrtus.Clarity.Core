@@ -1,4 +1,4 @@
-﻿namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Keycloak.Models;
+﻿namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Azure.Models;
 
 public class CredentialRepresentationModel
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Keycloak.Models;
+namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Azure.Models;
 
 public sealed class AuthorizationToken
 {
