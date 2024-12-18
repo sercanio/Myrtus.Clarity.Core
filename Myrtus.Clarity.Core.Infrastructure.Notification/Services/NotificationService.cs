@@ -1,91 +1,108 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using Myrtus.Clarity.Application.Repositories.NoSQL;
+using Myrtus.Clarity.Application.Services.Users;
 using Myrtus.Clarity.Core.Application.Abstractions.Notification;
+using Myrtus.Clarity.Core.Domain.Abstractions;
 using Myrtus.Clarity.Core.Infrastructure.SignalR.Hubs;
+using Myrtus.Clarity.Domain.Users;
 
-namespace Myrtus.Clarity.Core.Infrastructure.Notification.Services
+namespace Myrtus.Clarity.Core.Infrastructure.Notifications.Services
 {
     public class NotificationService : INotificationService, IDisposable
     {
-        private readonly IMongoCollection<Domain.Abstractions.Notification> _notifications;
+        private readonly INoSqlRepository<Notification> _notificationRepository;
         private readonly IHubContext<NotificationHub> _hubContext;
-        private readonly MongoClient _client;
+        private readonly IUserService _userService; // Added IUserService dependency
         private bool _disposed;
 
         public NotificationService(
-            IConfiguration configuration,
-            IHubContext<NotificationHub> hubContext)
+            INoSqlRepository<Notification> notificationRepository,
+            IHubContext<NotificationHub> hubContext,
+            IUserService userService) // Injected IUserService
         {
-            _client = new MongoClient(configuration.GetConnectionString("MongoDb"));
-            IMongoDatabase database = _client.GetDatabase(configuration["MongoDb:Database"]);
-            _notifications = database.GetCollection<Domain.Abstractions.Notification>("Notifications");
+            _notificationRepository = notificationRepository;
             _hubContext = hubContext;
+            _userService = userService;
         }
 
-        private static Domain.Abstractions.Notification CreateNotification(string message, string? userId = null)
+        private static Notification CreateNotification(string? userId = null, string? user = null, string? action = null, string? entity = null, string? entityId = null, string? details = null)
         {
-            return new Domain.Abstractions.Notification
+            return new Notification
             {
                 Id = Guid.NewGuid(),
-                Message = message,
-                UserId = userId!,
-                Timestamp = DateTime.UtcNow
+                UserId = userId ?? string.Empty,
+                User = user ?? string.Empty,
+                Action = action ?? string.Empty,
+                Entity = entity ?? string.Empty,
+                EntityId = entityId ?? string.Empty,
+                Timestamp = DateTime.UtcNow,
+                Details = details ?? string.Empty,
+                IsRead = false
             };
         }
 
-        private async Task InsertNotificationAsync(Domain.Abstractions.Notification notification)
+        private async Task InsertNotificationAsync(Notification notification)
         {
-            await _notifications.InsertOneAsync(notification);
+            await _notificationRepository.AddAsync(notification);
         }
 
-        public async Task SendNotificationAsync(string message)
+        public async Task SendNotificationAsync(string details)
         {
-            Domain.Abstractions.Notification notification = CreateNotification(message);
+            Notification notification = CreateNotification(details: details);
             await InsertNotificationAsync(notification);
             await _hubContext.Clients.All.SendAsync("ReceiveNotification", notification);
         }
 
-        public async Task SaveNotificationAsync(string message, string userId)
+        public async Task SaveNotificationAsync(string details, string userId)
         {
-            Domain.Abstractions.Notification notification = CreateNotification(message, userId);
+            Notification notification = CreateNotification(userId: userId, details: details);
             await InsertNotificationAsync(notification);
         }
 
-        public async Task SendNotificationToUserAsync(string message, string userId)
+        public async Task SendNotificationToUserAsync(string details, string userId)
         {
-            Domain.Abstractions.Notification notification = CreateNotification(message, userId);
+            Notification notification = CreateNotification(userId: userId, details: details);
             await InsertNotificationAsync(notification);
             await _hubContext.Clients.User(userId).SendAsync("ReceiveNotification", notification);
         }
 
-        public async Task<List<Domain.Abstractions.Notification>> GetNotificationsByUserIdAsync(string userId)
+        public async Task<List<Notification>> GetNotificationsByUserIdAsync(string userId)
         {
-            FilterDefinition<Domain.Abstractions.Notification> filter = Builders<Domain.Abstractions.Notification>.Filter.Eq(n => n.UserId, userId);
-            return await _notifications.Find(filter).ToListAsync();
+            return (await _notificationRepository.GetByPredicateAsync(n => n.UserId == userId)).ToList();
         }
 
-        public async Task SendNotificationToUsersAsync(string message, IEnumerable<string> userIds)
+        public async Task SendNotificationToUsersAsync(string details, IEnumerable<string> userIds)
         {
-            List<Domain.Abstractions.Notification> notifications = [];
+            List<Notification> notifications = new();
             foreach (string userId in userIds)
             {
-                Domain.Abstractions.Notification notification = CreateNotification(message, userId);
+                Notification notification = CreateNotification(userId: userId, details: details);
                 notifications.Add(notification);
             }
 
-            await _notifications.InsertManyAsync(notifications);
-
-            foreach (Domain.Abstractions.Notification notification in notifications)
+            foreach (var notification in notifications)
             {
+                await InsertNotificationAsync(notification);
                 await _hubContext.Clients.User(notification.UserId).SendAsync("ReceiveNotification", notification);
             }
         }
 
-        public async Task<List<Domain.Abstractions.Notification>> GetNotificationsByUserIdsAsync(IEnumerable<string> userIds)
+        public async Task<List<Notification>> GetNotificationsByUserIdsAsync(IEnumerable<string> userIds)
         {
-            FilterDefinition<Domain.Abstractions.Notification> filter = Builders<Domain.Abstractions.Notification>.Filter.In(n => n.UserId, userIds);
-            return await _notifications.Find(filter).ToListAsync();
+            return (await _notificationRepository.GetByPredicateAsync(n => userIds.Contains(n.UserId))).ToList();
+        }
+
+        public async Task SendNotificationToUserGroupAsync(string details, string groupName)
+        {
+            // Get users with the specified role
+            var paginatedUsers = await _userService.GetAllAsync(
+                predicate: user => user.Roles.Any(role => role.Name == groupName));
+            IEnumerable<User> users = paginatedUsers.Items;
+
+            List<string> userIds = users.Select(u => u.IdentityId.ToString()).ToList();
+
+            await SendNotificationToUsersAsync(details, userIds);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -94,7 +111,7 @@ namespace Myrtus.Clarity.Core.Infrastructure.Notification.Services
             {
                 if (disposing)
                 {
-                    _client?.Dispose();
+                    // Dispose managed resources here
                 }
                 _disposed = true;
             }
