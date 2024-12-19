@@ -2,16 +2,20 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ardalis.Result;
+using Myrtus.Clarity.Core.Application.Abstractions.Localization.Services;
+using System.Globalization;
 
 namespace Myrtus.Clarity.Core.WebApi;
 
 public class ErrorHandlingService : IErrorHandlingService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILocalizationService _localizationService;
 
-    public ErrorHandlingService(IHttpContextAccessor httpContextAccessor)
+    public ErrorHandlingService(IHttpContextAccessor httpContextAccessor, ILocalizationService localizationService)
     {
         _httpContextAccessor = httpContextAccessor;
+        _localizationService = localizationService;
     }
 
     public IActionResult HandleErrorResponse<T>(Result<T> result)
@@ -20,7 +24,8 @@ public class ErrorHandlingService : IErrorHandlingService
         var validationErrors = result.ValidationErrors.Select(ve => ve.ErrorMessage).ToList();
         var combinedErrors = errorList.Concat(validationErrors).ToList();
 
-        var summaryMessage = GetSummaryMessage(result.Status);
+        var language = GetLanguageFromHeader();
+        var summaryMessage = GetSummaryMessage(result.Status, language);
 
         var problemDetails = new ProblemDetails
         {
@@ -40,17 +45,35 @@ public class ErrorHandlingService : IErrorHandlingService
         };
     }
 
-    private string GetSummaryMessage(ResultStatus status) =>
-        status switch
+    private string GetLanguageFromHeader()
+    {
+        var acceptLanguageHeader = _httpContextAccessor.HttpContext?.Request.Headers["Accept-Language"].ToString();
+        if (!string.IsNullOrEmpty(acceptLanguageHeader))
         {
-            ResultStatus.NotFound => "The requested resource could not be found.",
-            ResultStatus.Invalid => "There were validation errors with your request.",
-            ResultStatus.Error => "An unexpected error occurred.",
-            ResultStatus.Forbidden => "You do not have permission to access this resource.",
-            ResultStatus.Unauthorized => "You are not authorized to access this resource.",
-            ResultStatus.Conflict => "There was a conflict with the current state of the resource.",
-            _ => "An unexpected error occurred."
+            var languages = acceptLanguageHeader.Split(',');
+            if (languages.Length > 0)
+            {
+                return languages[0];
+            }
+        }
+        return CultureInfo.CurrentCulture.Name; // Fallback to current culture
+    }
+
+    private string GetSummaryMessage(ResultStatus status, string language)
+    {
+        var key = status switch
+        {
+            ResultStatus.NotFound => "Errors.NotFound",
+            ResultStatus.Invalid => "Errors.Invalid",
+            ResultStatus.Error => "Errors.Error",
+            ResultStatus.Forbidden => "Errors.Forbidden",
+            ResultStatus.Unauthorized => "Errors.Unauthorized",
+            ResultStatus.Conflict => "Errors.Conflict",
+            _ => "Errors.Error"
         };
+
+        return _localizationService.GetLocalizedString(key, language);
+    }
 
     private string GetTitle(ResultStatus status) =>
         status switch

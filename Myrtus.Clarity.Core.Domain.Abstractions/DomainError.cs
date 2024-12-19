@@ -8,6 +8,7 @@ namespace Myrtus.Clarity.Core.Domain.Abstractions
 
         public static readonly DomainError NullValue = new("Error.NullValue", 400, "Null value was provided");
 
+
         // Validation errors
         public IEnumerable<ValidationError>? Errors { get; init; }
 
