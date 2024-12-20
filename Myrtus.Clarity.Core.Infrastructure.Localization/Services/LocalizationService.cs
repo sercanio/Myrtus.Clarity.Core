@@ -42,7 +42,6 @@ namespace Myrtus.Clarity.Core.Infrastructure.Localization.Services
         {
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .IgnoreUnmatchedProperties()
                 .Build();
 
             var localizedMessages = new Dictionary<string, Dictionary<string, string>>();
@@ -57,10 +56,13 @@ namespace Myrtus.Clarity.Core.Infrastructure.Localization.Services
                     try
                     {
                         var language = Path.GetFileNameWithoutExtension(filePath);
-                        var yamlContent = File.ReadAllText(filePath, Encoding.UTF8);
 
-                        var messages = deserializer.Deserialize<Dictionary<string, object>>(yamlContent);
-                        localizedMessages[language] = FlattenDictionary(messages);
+                        // Use StreamReader with UTF8 encoding and pass it directly to the deserializer
+                        using (var reader = new StreamReader(filePath, Encoding.UTF8))
+                        {
+                            var messages = deserializer.Deserialize<Dictionary<object, object>>(reader);
+                            localizedMessages[language] = FlattenDictionary(messages);
+                        }
 
                         _logger.LogInformation("Successfully loaded {Count} keys for language {Language}", localizedMessages[language].Count, language);
                     }
@@ -74,25 +76,37 @@ namespace Myrtus.Clarity.Core.Infrastructure.Localization.Services
             return localizedMessages;
         }
 
-        private Dictionary<string, string> FlattenDictionary(Dictionary<string, object> nestedDict, string parentKey = "")
+        private Dictionary<string, string> FlattenDictionary(IDictionary<object, object> nestedDict, string parentKey = "")
         {
             var flatDict = new Dictionary<string, string>();
 
             foreach (var pair in nestedDict)
             {
-                var key = string.IsNullOrEmpty(parentKey) ? pair.Key : $"{parentKey}.{pair.Key}";
-
-                if (pair.Value is Dictionary<object, object> nested)
+                // Ensure the key is handled as string
+                var keyPart = pair.Key as string;
+                if (keyPart == null)
                 {
-                    var nestedDictTyped = nested.ToDictionary(k => k.Key.ToString()!, v => v.Value);
-                    foreach (var innerPair in FlattenDictionary(nestedDictTyped, key))
+                    _logger.LogWarning("Skipping key because it is not a string: {Key}", pair.Key);
+                    continue;
+                }
+
+                var key = string.IsNullOrEmpty(parentKey) ? keyPart : $"{parentKey}.{keyPart}";
+
+                if (pair.Value is IDictionary<object, object> nested)
+                {
+                    foreach (var innerPair in FlattenDictionary(nested, key))
                     {
                         flatDict[innerPair.Key] = innerPair.Value;
                     }
                 }
+                else if (pair.Value is string stringValue)
+                {
+                    flatDict[key] = stringValue;
+                }
                 else
                 {
-                    flatDict[key] = pair.Value?.ToString() ?? string.Empty;
+                    // Handle scalar values
+                    flatDict[key] = pair.Value != null ? Convert.ToString(pair.Value, System.Globalization.CultureInfo.InvariantCulture) : string.Empty;
                 }
             }
 
