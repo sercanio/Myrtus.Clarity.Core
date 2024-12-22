@@ -88,14 +88,13 @@ namespace Myrtus.Clarity.Core.Infrastructure.Notifications.Services
             }
         }
 
-        public async Task<List<Notification>> GetNotificationsByUserIdsAsync(IEnumerable<string> userIds)
+        public async Task<IEnumerable<Notification>> GetNotificationsByUserIdsAsync(string userId, CancellationToken cancellationToken)
         {
-            return (await _notificationRepository.GetByPredicateAsync(n => userIds.Contains(n.UserId))).ToList();
+            return await _notificationRepository.GetAllAsync(n => n.UserId == userId, cancellationToken);
         }
 
         public async Task SendNotificationToUserGroupAsync(string details, string groupName)
         {
-            // Get users with the specified role
             var paginatedUsers = await _userService.GetAllAsync(
                 predicate: user => user.Roles.Any(role => role.Name == groupName));
             IEnumerable<User> users = paginatedUsers.Items;
@@ -103,6 +102,19 @@ namespace Myrtus.Clarity.Core.Infrastructure.Notifications.Services
             List<string> userIds = users.Select(u => u.IdentityId.ToString()).ToList();
 
             await SendNotificationToUsersAsync(details, userIds);
+        }
+
+        public async Task MarkNotificationsAsReadAsync(string UserId, CancellationToken cancellation)
+        {
+            var notifications = await _notificationRepository.GetAllAsync(
+                predicate: n => n.UserId == UserId && !n.IsRead,
+                cancellationToken: cancellation);
+
+            foreach (var notification in notifications)
+            {
+                notification.IsRead = true;
+                await _notificationRepository.UpdateAsync(notification, cancellation);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
