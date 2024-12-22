@@ -7,5 +7,6 @@
         Task SaveNotificationAsync(string details, string userId);
         Task SendNotificationToUserGroupAsync(string details, string groupName);
         Task<List<Domain.Abstractions.Notification>> GetNotificationsByUserIdAsync(string userId);
+        Task MarkNotificationsAsReadAsync(string UserId, CancellationToken cancellation);
     }
 }
