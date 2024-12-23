@@ -5,7 +5,7 @@ using Ardalis.Result;
 using Myrtus.Clarity.Core.Application.Abstractions.Localization.Services;
 using System.Globalization;
 
-namespace Myrtus.Clarity.Core.WebApi;
+namespace Myrtus.Clarity.Core.WebAPI;
 
 public class ErrorHandlingService : IErrorHandlingService
 {

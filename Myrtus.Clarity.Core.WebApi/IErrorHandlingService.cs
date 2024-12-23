@@ -1,7 +1,7 @@
 ﻿using Ardalis.Result;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Myrtus.Clarity.Core.WebApi;
+namespace Myrtus.Clarity.Core.WebAPI;
 
 public interface IErrorHandlingService
 {
