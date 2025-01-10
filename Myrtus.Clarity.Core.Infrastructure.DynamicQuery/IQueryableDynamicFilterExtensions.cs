@@ -68,7 +68,7 @@ public static class IQueryableDynamicFilterExtensions
 
         if (sort.Any())
         {
-            string ordering = string.Join(",", sort.Select(s => $"{s.Field} {s.Dir}"));
+            string ordering = string.Join(",", sort.Select(s => $"{s.Field}.Value {s.Dir}"));
             return queryable.OrderBy(ordering);
         }
 
@@ -102,6 +102,8 @@ public static class IQueryableDynamicFilterExtensions
         string comparison = _operators[filter.Operator];
         var whereClause = new StringBuilder();
 
+        string field = $"{filter.Field}.Value"; // Access the Value property
+
         if (!string.IsNullOrEmpty(filter.Value))
         {
             bool isStringOperator = _stringOperators.Contains(filter.Operator);
@@ -110,29 +112,29 @@ public static class IQueryableDynamicFilterExtensions
             if (filter.Operator == "doesnotcontain")
             {
                 if (shouldBeCaseInsensitive)
-                    whereClause.Append($"(!np({filter.Field}).ToLower().{comparison}(@{index}.ToLower()))");
+                    whereClause.Append($"(!np({field}).ToLower().{comparison}(@{index}.ToLower()))");
                 else
-                    whereClause.Append($"(!np({filter.Field}).{comparison}(@{index}))");
+                    whereClause.Append($"(!np({field}).{comparison}(@{index}))");
             }
             else if (comparison is "StartsWith" or "EndsWith" or "Contains")
             {
                 if (shouldBeCaseInsensitive)
-                    whereClause.Append($"(np({filter.Field}).ToLower().{comparison}(@{index}.ToLower()))");
+                    whereClause.Append($"(np({field}).ToLower().{comparison}(@{index}.ToLower()))");
                 else
-                    whereClause.Append($"(np({filter.Field}).{comparison}(@{index}))");
+                    whereClause.Append($"(np({field}).{comparison}(@{index}))");
             }
             else if (isStringOperator && shouldBeCaseInsensitive)
             {
-                whereClause.Append($"np({filter.Field}).ToLower() {comparison} @{index}.ToLower()");
+                whereClause.Append($"np({field}).ToLower() {comparison} @{index}.ToLower()");
             }
             else
             {
-                whereClause.Append($"np({filter.Field}) {comparison} @{index}");
+                whereClause.Append($"np({field}) {comparison} @{index}");
             }
         }
         else if (filter.Operator is "isnull" or "isnotnull")
         {
-            whereClause.Append($"np({filter.Field}) {comparison}");
+            whereClause.Append($"np({field}) {comparison}");
         }
 
         if (filter.Logic is not null && filter.Filters is not null && filter.Filters.Any())
