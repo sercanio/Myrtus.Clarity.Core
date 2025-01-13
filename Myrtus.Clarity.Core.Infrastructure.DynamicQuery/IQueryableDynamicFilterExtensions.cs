@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
+using Myrtus.Clarity.Core.Domain.Abstractions; // For ValueObject, if that's where it's defined
 
 namespace Myrtus.Clarity.Core.Infrastructure.Dynamic;
 
@@ -33,6 +35,11 @@ public static class IQueryableDynamicFilterExtensions
         "eq"
     };
 
+    /// <summary>
+    /// Applies filtering and sorting from a DynamicQuery to the IQueryable.
+    /// If a filter/sort field corresponds to a ValueObject property,
+    /// we append ".Value" automatically; otherwise, we use the field as-is.
+    /// </summary>
     public static IQueryable<T> ToDynamic<T>(this IQueryable<T> query, DynamicQuery dynamicQuery)
     {
         if (dynamicQuery.Filter is not null)
@@ -44,32 +51,19 @@ public static class IQueryableDynamicFilterExtensions
         return query;
     }
 
+    #region Filtering
+
     private static IQueryable<T> ApplyFilter<T>(IQueryable<T> queryable, Filter filter)
     {
         var filters = GetAllFilters(filter);
+        // We'll extract all filter.Value as parameters
         string[] values = filters.Select(f => f.Value).ToArray();
-        string whereClause = BuildWhereClause(filter, filters);
 
+        // Build final Where clause (Dynamic LINQ string)
+        string whereClause = BuildWhereClause<T>(filter, filters);
         if (!string.IsNullOrEmpty(whereClause) && values.Any())
+        {
             queryable = queryable.Where(whereClause, values);
-
-        return queryable;
-    }
-
-    private static IQueryable<T> ApplySorting<T>(IQueryable<T> queryable, IEnumerable<Sort> sort)
-    {
-        foreach (var item in sort)
-        {
-            if (string.IsNullOrEmpty(item.Field))
-                throw new ArgumentException("Sort field cannot be empty.");
-            if (string.IsNullOrEmpty(item.Dir) || !_orders.Contains(item.Dir))
-                throw new ArgumentException($"Invalid sort direction: {item.Dir}");
-        }
-
-        if (sort.Any())
-        {
-            string ordering = string.Join(",", sort.Select(s => $"{s.Field}.Value {s.Dir}"));
-            return queryable.OrderBy(ordering);
         }
 
         return queryable;
@@ -87,12 +81,21 @@ public static class IQueryableDynamicFilterExtensions
         filters.Add(filter);
 
         if (filter.Filters is not null && filter.Filters.Any())
+        {
             foreach (var subFilter in filter.Filters)
+            {
                 CollectFilters(subFilter, filters);
+            }
+        }
     }
 
-    private static string BuildWhereClause(Filter filter, IList<Filter> filters)
+    /// <summary>
+    /// Recursively build a Where clause string for this filter (and sub-filters),
+    /// adding ".Value" if the field is a ValueObject property.
+    /// </summary>
+    private static string BuildWhereClause<T>(Filter filter, IList<Filter> filters)
     {
+        // Basic checks
         if (string.IsNullOrEmpty(filter.Field))
             throw new ArgumentException("Filter field cannot be empty.");
         if (string.IsNullOrEmpty(filter.Operator) || !_operators.ContainsKey(filter.Operator))
@@ -100,52 +103,125 @@ public static class IQueryableDynamicFilterExtensions
 
         int index = filters.IndexOf(filter);
         string comparison = _operators[filter.Operator];
+
+        // => figure out how to reference the property in code: "np(fieldName).Value" if VO, else "np(fieldName)"
+        string fieldExpression = GetFieldExpression<T>(filter.Field);
+
         var whereClause = new StringBuilder();
 
-        string field = $"{filter.Field}.Value"; // Access the Value property
-
+        // Build expression
         if (!string.IsNullOrEmpty(filter.Value))
         {
             bool isStringOperator = _stringOperators.Contains(filter.Operator);
             bool shouldBeCaseInsensitive = isStringOperator && !filter.IsCaseSensitive;
 
+            // The user might do "doesnotcontain"
             if (filter.Operator == "doesnotcontain")
             {
                 if (shouldBeCaseInsensitive)
-                    whereClause.Append($"(!np({field}).ToLower().{comparison}(@{index}.ToLower()))");
+                {
+                    whereClause.Append($"(!np({fieldExpression}).ToLower().{comparison}(@{index}.ToLower()))");
+                }
                 else
-                    whereClause.Append($"(!np({field}).{comparison}(@{index}))");
+                {
+                    whereClause.Append($"(!np({fieldExpression}).{comparison}(@{index}))");
+                }
             }
             else if (comparison is "StartsWith" or "EndsWith" or "Contains")
             {
                 if (shouldBeCaseInsensitive)
-                    whereClause.Append($"(np({field}).ToLower().{comparison}(@{index}.ToLower()))");
+                {
+                    whereClause.Append($"(np({fieldExpression}).ToLower().{comparison}(@{index}.ToLower()))");
+                }
                 else
-                    whereClause.Append($"(np({field}).{comparison}(@{index}))");
+                {
+                    whereClause.Append($"(np({fieldExpression}).{comparison}(@{index}))");
+                }
             }
             else if (isStringOperator && shouldBeCaseInsensitive)
             {
-                whereClause.Append($"np({field}).ToLower() {comparison} @{index}.ToLower()");
+                // eq, startswith, etc. ignoring case
+                whereClause.Append($"np({fieldExpression}).ToLower() {comparison} @{index}.ToLower()");
             }
             else
             {
-                whereClause.Append($"np({field}) {comparison} @{index}");
+                // normal integer, date, or string eq (with case) etc.
+                whereClause.Append($"np({fieldExpression}) {comparison} @{index}");
             }
         }
         else if (filter.Operator is "isnull" or "isnotnull")
         {
-            whereClause.Append($"np({field}) {comparison}");
+            whereClause.Append($"np({fieldExpression}) {comparison}");
         }
 
+        // If there are sub-filters, combine them with AND/OR
         if (filter.Logic is not null && filter.Filters is not null && filter.Filters.Any())
         {
             if (!_logics.Contains(filter.Logic))
                 throw new ArgumentException($"Invalid filter logic: {filter.Logic}");
 
-            string subFilters = string.Join($" {filter.Logic} ", filter.Filters.Select(f => BuildWhereClause(f, filters)));
+            string subFilters = string.Join(
+                $" {filter.Logic} ",
+                filter.Filters.Select(f => BuildWhereClause<T>(f, filters))
+            );
+
             return $"{whereClause} {filter.Logic} ({subFilters})";
         }
 
         return whereClause.ToString();
     }
+
+    #endregion
+
+    #region Sorting
+
+    private static IQueryable<T> ApplySorting<T>(IQueryable<T> queryable, IEnumerable<Sort> sort)
+    {
+        foreach (var item in sort)
+        {
+            if (string.IsNullOrEmpty(item.Field))
+                throw new ArgumentException("Sort field cannot be empty.");
+            if (string.IsNullOrEmpty(item.Dir) || !_orders.Contains(item.Dir))
+                throw new ArgumentException($"Invalid sort direction: {item.Dir}");
+        }
+
+        // e.g. "Title.Value asc, UpdatedAt desc"
+        string ordering = string.Join(
+            ",",
+            sort.Select(s => $"{GetFieldExpression<T>(s.Field)} {s.Dir}")
+        );
+
+        return queryable.OrderBy(ordering);
+    }
+
+    #endregion
+
+    #region Helpers
+
+    /// <summary>
+    /// For a given property name (fieldName), we detect if it's a ValueObject, 
+    /// and if so, return "fieldName.Value"; otherwise, just "fieldName".
+    /// We'll also wrap with 'np(...)' in calling code.
+    /// </summary>
+    private static string GetFieldExpression<T>(string fieldName)
+    {
+        // If user typed e.g. "versions[0].Title" or something, might be more complicated:
+        // Basic approach: only handle top-level property
+        // If you have nested, you'll need more complex logic
+
+        var propInfo = typeof(T).GetProperty(fieldName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+        if (propInfo == null)
+        {
+            // if we didn't find a property, maybe user is referencing a sub-property? 
+            // For example "SomeSubObject.SomeProperty"? 
+            // We'll just return the raw fieldName and let the user define or handle partial matches 
+            return fieldName;
+        }
+
+        // Check if property type inherits from ValueObject
+        bool isValueObject = typeof(ValueObject).IsAssignableFrom(propInfo.PropertyType);
+        return isValueObject ? $"{fieldName}.Value" : fieldName;
+    }
+
+    #endregion
 }
