@@ -17,7 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Myrtus.Clarity.Core.Application.Abstractions.Auditing\Myrtus.Clarity.Core.Application.Abstractions.Auditing.csproj" />
 		<ProjectReference Include="..\Myrtus.Clarity.Core.Application.Abstractions.Caching\Myrtus.Clarity.Core.Application.Abstractions.Caching.csproj" />
 		<ProjectReference Include="..\Myrtus.Clarity.Core.Application.Abstractions.Messaging\Myrtus.Clarity.Core.Application.Abstractions.Messaging.csproj" />
 		<ProjectReference Include="..\Myrtus.Clarity.Core.Application.Exceptions\Myrtus.Clarity.Core.Application.Exceptions.csproj" />
