@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppTemplate.Core.Domain.Abstractions\AppTemplate.Core.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\AppTemplate.Core.Domain.Abstractions\AppTemplate.Core.Domain.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
