@@ -1,39 +1,45 @@
-﻿using Myrtus.Clarity.Core.Application.Abstractions.Pagination;
+using Myrtus.Clarity.Core.Domain.Abstractions;
 using Myrtus.Clarity.Core.Infrastructure.Dynamic;
+using Myrtus.Clarity.Core.Infrastructure.Pagination;
 using System.Linq.Expressions;
 
-namespace Myrtus.Clarity.Core.Application.Repositories;
+namespace Myrtus.Clarity.Core.Application.Abstractions.Repositories;
 
-public interface IRepository<T>
+public interface IRepository<TEntity, TKey>
+    where TEntity : Entity<TKey>
 {
-    Task<T?> GetAsync(
-        Expression<Func<T, bool>> predicate,
-        bool includeSoftDeleted = false,
-        CancellationToken cancellationToken = default,
-        params Expression<Func<T, object>>[] include);
+  Task<TEntity?> GetAsync(
+      Expression<Func<TEntity, bool>> predicate,
+      bool includeSoftDeleted = false,
+      Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
+      bool asNoTracking = true,
+      CancellationToken cancellationToken = default);
 
-    Task<IPaginatedList<T>> GetAllAsync(
-        int pageIndex = 0,
-        int pageSize = 10,
-        bool includeSoftDeleted = false,
-        Expression<Func<T, bool>>? predicate = null,
-        CancellationToken cancellationToken = default,
-        params Expression<Func<T, object>>[] include);
+  Task<PaginatedList<TEntity>> GetAllAsync(
+      int pageIndex = 0,
+      int pageSize = 10,
+      Expression<Func<TEntity, bool>>? predicate = null,
+      bool includeSoftDeleted = false,
+      Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
+      bool asNoTracking = true,
+      CancellationToken cancellationToken = default);
 
-    Task<IPaginatedList<T>> GetAllDynamicAsync(
-        DynamicQuery dynamicQuery,
-        int pageIndex = 0,
-        int pageSize = 10,
-        bool includeSoftDeleted = false,
-        CancellationToken cancellationToken = default,
-        params Expression<Func<T, object>>[] include);
+  Task<PaginatedList<TEntity>> GetAllDynamicAsync(
+      DynamicQuery dynamicQuery,
+      int pageIndex = 0,
+      int pageSize = 10,
+      bool includeSoftDeleted = false,
+      Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
+      bool asNoTracking = true,
+      CancellationToken cancellationToken = default);
 
-    Task<bool> ExistsAsync(
-            Expression<Func<T, bool>> predicate,
-            bool includeSoftDeleted = false,
-            CancellationToken cancellationToken = default);
+  Task<bool> ExistsAsync(
+      Expression<Func<TEntity, bool>> predicate,
+      bool includeSoftDeleted = false,
+      bool asNoTracking = true,
+      CancellationToken cancellationToken = default);
 
-    Task AddAsync(T entity);
-    void Update(T entity);
-    void Delete(T entity, bool isSoftDelete = true);
+  Task AddAsync(TEntity entity);
+  void Update(TEntity entity);
+  void Delete(TEntity entity, bool isSoftDelete = true);
 }
