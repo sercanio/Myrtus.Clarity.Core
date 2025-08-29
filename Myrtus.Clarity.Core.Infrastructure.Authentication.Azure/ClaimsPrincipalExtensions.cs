@@ -1,5 +1,6 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.JsonWebTokens;
+using System.Security.Claims;
 
 namespace Myrtus.Clarity.Core.Infrastructure.Authentication.Azure;
 
@@ -14,9 +15,33 @@ public static class ClaimsPrincipalExtensions
             throw new ApplicationException("User id is unavailable");
     }
 
-    public static string GetIdentityId(this ClaimsPrincipal? principal)
+    public static string GetIdentityId(this ClaimsPrincipal principal)
     {
-        return principal?.FindFirstValue(ClaimTypes.NameIdentifier) ??
-               throw new ApplicationException("User identity is unavailable");
+        if (principal == null)
+            throw new ArgumentNullException(nameof(principal));
+
+        // 1) Try the standard NameIdentifier claim (cookie or mapped JWT).
+        var id = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!string.IsNullOrWhiteSpace(id))
+            return id;
+
+        // 2) Fallback: if we're in a 2FA or "Remember Me" flow, grab the .Name
+        var fallbackSchemes = new[]
+        {
+            IdentityConstants.TwoFactorUserIdScheme,
+            IdentityConstants.TwoFactorRememberMeScheme
+        };
+
+        var twoFactorIdentity = principal.Identities
+            .FirstOrDefault(i => fallbackSchemes.Contains(i.AuthenticationType)
+                              && !string.IsNullOrWhiteSpace(i.Name));
+
+        if (twoFactorIdentity != null)
+            return twoFactorIdentity.Name!;
+
+        // 3) (Optional) If you ever add JWT-bearer without mapping NameIdentifier, you
+        // could check JwtRegisteredClaimNames.Sub here.
+
+        throw new ApplicationException("User identity is unavailable");
     }
 }
